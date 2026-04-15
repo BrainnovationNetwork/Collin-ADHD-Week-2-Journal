@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2 Journal Prompts: Go Deeper</title>
+    <style>
+        /* CSS Variables - Brand Colors */
+        :root {
+            --brand-dark: #1B365D;
+            --brand-blue: #407EC9;
+            --brand-light-blue: #8BD3E6;
+            --brand-teal: #6DCDB8;
+            --brand-yellow: #F1B434;
+            --brand-pink: #E06287;
+            --brand-gray: #E6E7E8;
+            --bg-color: #fdfdfd;
+            
+            /* Glassmorphism settings */
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --navy-glass-bg: rgba(27, 54, 93, 0.85);
+            --shadow-soft: 0 20px 50px rgba(27, 54, 93, 0.06);
+        }
+
+        /* Base & Typography */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--brand-dark);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Background Orbs */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fdfdfd 0%, var(--brand-gray) 100%);
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .orb-1 {
+            width: 500px; height: 500px;
+            background: var(--brand-light-blue);
+            top: -100px; left: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px; height: 400px;
+            background: var(--brand-teal);
+            bottom: -50px; right: -100px;
+            animation-delay: -5s;
+        }
+        
+        .orb-3 {
+            width: 300px; height: 300px;
+            background: var(--brand-pink);
+            top: 40%; left: 60%;
+            opacity: 0.2;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; margin-top: 0; }
+        h1 { font-size: 2.5rem; margin-bottom: 0.2em; color: #fff; }
+        h2 { font-size: 1.5rem; color: var(--brand-blue); text-transform: uppercase; letter-spacing: 2px; font-weight: 500; margin-bottom: 30px; border-bottom: 1px solid var(--brand-light-blue); padding-bottom: 10px; }
+
+        /* Layout */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+        }
+
+        /* Header */
+        .navy-glass {
+            background: var(--navy-glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 16px 40px rgba(27, 54, 93, 0.2);
+            padding: 50px 40px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .brand-logo {
+            width: 280px;
+            max-width: 90%;
+            height: auto;
+            margin: 0 auto 25px;
+            display: block;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--brand-light-blue);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 15px auto 0;
+            line-height: 1.6;
+        }
+
+        /* Focus Mode Carousel */
+        .journal-carousel {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+        }
+
+        .journal-slide {
+            grid-area: 1 / 1;
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--shadow-soft);
+            padding: 50px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(30px) scale(0.98);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .journal-slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            z-index: 10;
+        }
+
+        /* Prompts & Inputs */
+        .prompt-group {
+            margin-bottom: 40px;
+        }
+
+        .prompt-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .prompt-text {
+            font-size: 1.25rem;
+            color: var(--brand-dark);
+            margin-bottom: 20px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(64, 126, 201, 0.2);
+            background: rgba(255, 255, 255, 0.5);
+            font-family: inherit;
+            font-size: 1.1rem;
+            color: var(--brand-dark);
+            box-sizing: border-box;
+            resize: vertical;
+            transition: all 0.4s ease;
+            line-height: 1.6;
+        }
+
+        textarea:focus {
+            outline: none;
+            background: #fff;
+            border-color: var(--brand-light-blue);
+            box-shadow: 0 0 0 4px rgba(139, 211, 230, 0.3);
+            animation: breathFocus 4s infinite ease-in-out;
+        }
+
+        @keyframes breathFocus {
+            0% { box-shadow: 0 0 0 2px rgba(139, 211, 230, 0.2); }
+            50% { box-shadow: 0 0 0 6px rgba(139, 211, 230, 0.4); }
+            100% { box-shadow: 0 0 0 2px rgba(139, 211, 230, 0.2); }
+        }
+
+        /* Navigation Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding: 0 10px;
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--brand-blue);
+            border: 2px solid var(--brand-blue);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: var(--brand-blue);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(64, 126, 201, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            border-color: #ccc;
+            color: #ccc;
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: rgba(64, 126, 201, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: var(--brand-blue);
+            transform: scale(1.3);
+        }
+
+        /* Status & Final Screen */
+        .status-bar {
+            position: fixed;
+            top: 20px; right: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--brand-dark);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-soft);
+            display: flex; align-items: center; gap: 8px;
+            z-index: 1000;
+            transition: opacity 0.3s;
+        }
+
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--brand-teal);
+        }
+
+        .status-dot.saving {
+            background: var(--brand-yellow);
+            animation: pulse 1s infinite;
+        }
+
+        .final-message {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .final-message p {
+            font-size: 1.4rem;
+            color: var(--brand-dark);
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .btn-wipe {
+            background: transparent;
+            color: var(--brand-pink);
+            border: 1px solid var(--brand-pink);
+            margin: 0 auto;
+        }
+        
+        .btn-wipe:hover {
+            background: var(--brand-pink);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .journal-slide { padding: 30px 20px; }
+            h1 { font-size: 2rem; }
+            .controls { flex-direction: column-reverse; gap: 20px; }
+            .btn { width: 100%; justify-content: center; }
+            .dots { margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="status-bar" id="statusBar">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Journal Sync Active</span>
+    </div>
+
+    <div class="container">
+        <header class="navy-glass">
+            <img src="https://brainnovationnetwork.com/wp-content/uploads/2025/05/Asset-1@2x.png" alt="Brainnovation Network Logo" class="brand-logo">
+            <h1>Week 2 Journal Prompts</h1>
+            <div class="subtitle">These prompts are designed to help you connect the science of heart-brain coherence to your real life. There are no right or wrong answers — just honest exploration.</div>
+        </header>
+
+        <div class="journal-carousel" id="carousel">
+            
+            <div class="journal-slide active" data-index="0">
+                <h2>Your Relationship with Stress</h2>
+                <div class="prompt-group">
+                    <div class="prompt-text"><strong>Prompt 1:</strong> Describe your typical experience of stress. Where do you feel it in your body first? What usually triggers it? And how long does it tend to linger?</div>
+                    <textarea id="j_prompt1" data-save="true" placeholder="Start reflecting here..."></textarea>
+                </div>
+                <div class="prompt-group">
+                    <div class="prompt-text"><strong>Prompt 2:</strong> Before learning about heart-brain coherence, how did you usually handle stress? What worked? What didn't? Looking back now, can you see which nervous system branch was involved?</div>
+                    <textarea id="j_prompt2" data-save="true" placeholder="Start reflecting here..."></textarea>
+                </div>
+            </div>
+
+            <div class="journal-slide" data-index="1">
+                <h2>The Heart's Intelligence</h2>
+                <div class="prompt-group">
+                    <div class="prompt-text"><strong>Prompt 3:</strong> Have you ever had a "gut feeling" or a "heart knowing" about something? Describe a time when your heart seemed to know something before your mind did.</div>
+                    <textarea id="j_prompt3" data-save="true" placeholder="Start reflecting here..."></textarea>
+                </div>
+                <div class="prompt-group">
+                    <div class="prompt-text"><strong>Prompt 4:</strong> The heart generates an electromagnetic field that can affect the people around us. Think about someone in your life who makes you feel immediately calm and safe just by being near them. What do you think is happening energetically?</div>
+                    <textarea id="j_prompt4" data-save="true" placeholder="Start reflecting here..."></textarea>
+                </div>
+            </div>
+
+            <div class="journal-slide" data-index="2">
+                <h2>Emotions as Medicine</h2>
+                <div class="prompt-group">
+                    <div class="prompt-text"><strong>Prompt 5:</strong> Gratitude is one of the most powerful emotions for achieving coherence. What are 3–5 things in your life right now that you feel genuinely grateful for? As you write them, notice what happens in your body.</div>
+                    <textarea id="j_prompt5" data-save="true" placeholder="Start reflecting here..."></textarea>
+                </div>
+                <div class="prompt-group">
+                    <div class="prompt-text"><strong>Prompt 6:</strong> Which positive emotion feels most accessible to you — love, gratitude, joy, appreciation, or compassion? Which feels hardest to access? What do you think gets in the way?</div>
+                    <textarea id="j_prompt6" data-save="true" placeholder="Start reflecting here..."></textarea>
+                </div>
+            </div>
+
+            <div class="journal-slide" data-index="3">
+                <h2>Brain Health & Your Future</h2>
+                <div class="prompt-group">
+                    <div class="prompt-text"><strong>Prompt 7:</strong> When you think about your brain health 20–30 years from now, what do you most want to preserve? What does a sharp, healthy mind mean to you?</div>
+                    <textarea id="j_prompt7" data-save="true" placeholder="Start reflecting here..."></textarea>
+                </div>
+                <div class="prompt-group">
+                    <div class="prompt-text"><strong>Prompt 8:</strong> Coherence supports better sleep, and sleep is when the brain literally cleans itself. Reflect on your current relationship with sleep. What one change could you make this week?</div>
+                    <textarea id="j_prompt8" data-save="true" placeholder="Start reflecting here..."></textarea>
+                </div>
+            </div>
+
+            <div class="journal-slide" data-index="4">
+                <h2>Your Practice Journey</h2>
+                <div class="prompt-group">
+                    <div class="prompt-text"><strong>Prompt 9:</strong> After trying the 3-step coherence practice, describe your experience. What surprised you? What felt natural? What felt challenging?</div>
+                    <textarea id="j_prompt9" data-save="true" placeholder="Start reflecting here..."></textarea>
+                </div>
+                <div class="prompt-group">
+                    <div class="prompt-text"><strong>Prompt 10: Your Coherence Commitment.</strong> Write a short personal commitment to yourself. When will you practice? What do you hope to gain?</div>
+                    <textarea id="j_prompt10" data-save="true" placeholder="Start reflecting here..."></textarea>
+                </div>
+            </div>
+
+            <div class="journal-slide" data-index="5">
+                <div class="final-message">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="var(--brand-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 20px;">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <h2 style="border:none; color:var(--brand-teal);">All Entries Safely Stored</h2>
+                    <p>"Remember: Coherence is not a destination — it's a practice. Every moment you return to your heart, you're rewiring your brain for greater peace, clarity, and resilience."</p>
+                    
+                    <button class="btn btn-wipe" id="clearBtn">Wipe Journal Data</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="prevBtn" disabled>← Previous</button>
+            <div class="dots" id="dotContainer">
+                </div>
+            <button class="btn" id="nextBtn">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Carousel Logic ---
+        const slides = document.querySelectorAll('.journal-slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotContainer = document.getElementById('dotContainer');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        // Generate Dots
+        for(let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if(i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotContainer.appendChild(dot);
+        }
+        const dots = document.querySelectorAll('.dot');
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            currentSlide = index;
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+            
+            // Update buttons
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            // Scroll to top of carousel smoothly
+            const carouselTop = document.getElementById('carousel').offsetTop - 50;
+            window.scrollTo({ top: carouselTop, behavior: 'smooth' });
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if(currentSlide > 0) goToSlide(currentSlide - 1);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if(currentSlide < totalSlides - 1) goToSlide(currentSlide + 1);
+        });
+
+
+        // --- 2. Local Storage Logic (45 Days) ---
+        const STORAGE_KEY = 'Brainnovation_Wk2_Journal';
+        const EXPIRY_DAYS = 45;
+        const inputs = document.querySelectorAll('[data-save="true"]');
+        
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        let saveTimeout;
+
+        function loadData() {
+            const rawData = localStorage.getItem(STORAGE_KEY);
+            if (!rawData) return;
+
+            try {
+                const parsed = JSON.parse(rawData);
+                const now = new Date().getTime();
+                
+                if (now - parsed.timestamp > (EXPIRY_DAYS * 24 * 60 * 60 * 1000)) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    return;
+                }
+
+                inputs.forEach(input => {
+                    const savedValue = parsed.data[input.id];
+                    if (savedValue !== undefined) {
+                        input.value = savedValue;
+                    }
+                });
+            } catch (e) {
+                console.error("Error loading journal data", e);
+            }
+        }
+
+        function triggerSave() {
+            statusDot.classList.add('saving');
+            statusText.innerText = "Saving...";
+
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                const dataToSave = {};
+                
+                inputs.forEach(input => {
+                    dataToSave[input.id] = input.value;
+                });
+
+                const payload = {
+                    timestamp: new Date().getTime(),
+                    data: dataToSave
+                };
+
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+
+                statusDot.classList.remove('saving');
+                statusText.innerText = "Autosaved";
+            }, 1000); 
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('input', triggerSave);
+        });
+
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            if(confirm("Are you sure you want to permanently delete all your journal entries? This cannot be undone.")) {
+                localStorage.removeItem(STORAGE_KEY);
+                window.location.reload();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', loadData);
+
+    </script>
+</body>
+</html>
